@@ -10,6 +10,7 @@ class Movie < ActiveRecord::Base
       Movie.all
     elsif ratings_list.empty?
       order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
+      
       Movie.order(order_given)
     elsif order_given.nil?
       moviesQualified = nil
