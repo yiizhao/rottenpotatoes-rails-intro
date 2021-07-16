@@ -1,7 +1,7 @@
 <!--  This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
 
-<%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
+<%= form_tag movies_path(@id), method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
@@ -18,9 +18,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th><%= link_to "Movie Title", movies_path(:id => 'title_header'), :id => 'title_header', :class => ("p-3 mb-2 bg-warning text-blue hilite" if @id.eql?('title_header')) %></th>
+      <th><%= link_to "Movie Title", movies_path(:id => 'title_header', :ratings => Hash[@ratings_to_show.collect { |item| [item, "1"] } ]), :id => 'title_header' %></th>
       <th>Rating</th>
-      <th><%= link_to "Release Date", movies_path(:id => 'release_date_header'), :id => 'release_date_header', :class => ("p-3 mb-2 bg-warning text-blue hilite" if @id.eql?('release_date_header')) %></th>
+      <th><%= link_to "Release Date", movies_path(:id => 'release_date_header', :ratings => Hash[@ratings_to_show.collect { |item| [item, "1"] } ]), :id => 'release_date_header' %></th>
       <th>More Info</th>
     </tr>
   </thead>
