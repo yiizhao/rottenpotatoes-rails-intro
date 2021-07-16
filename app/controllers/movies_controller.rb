@@ -40,19 +40,31 @@ class MoviesController < ApplicationController
 #  
 #  
 #  
-    
-    if !(params[:ratings].nil?)
-      session[:ratings] = params[:ratings]
-    end   
-    if !(params[:id].nil?)
-      session[:id] = params[:id]
+  
+    if (params[:ratings].nil?) && (params[:ratings].nil?)
+      #nothing
+    elsif !(params[:ratings].nil?)
+      if session[:ratings] != params[:ratings]
+        session[:ratings] = params[:ratings]
+        redirect_to movies_path(params[:ratings], params[:id])
+      end
+    elsif !(params[:id].nil?)
+      if !session[:id].eql?(params[:id]) 
+        session[:id] = params[:id]
+        redirect_to movies_path(params[:ratings], params[:id])
+      end
+    else
+      if session[:ratings] != params[:ratings]
+        session[:ratings] = params[:ratings]
+        redirect_to movies_path(params[:ratings], params[:id])  
+      end
+      if !session[:id].eql?(params[:id]) 
+        session[:id] = params[:id]
+        redirect_to movies_path(params[:ratings], params[:id])
+      end
     end
-    if !(session[:ratings].nil?)
-      @ratings_to_show = session[:ratings].keys
-    end
-    if !(session[:ratings].nil?)
-      @id = session[:id]
-    end
+    @ratings_to_show = params[:ratings].keys
+    @id = params[:id]
     @movies = Movie.with_ratings(@ratings_to_show, @id)
    
   end
