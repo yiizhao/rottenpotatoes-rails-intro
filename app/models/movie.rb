@@ -6,8 +6,11 @@ class Movie < ActiveRecord::Base
   end
   
   def self.with_ratings(ratings_list, order_given)
-    if ratings_list.empty?
+    if ratings_list.empty? && order_given.nil?
       Movie.all
+    elsif ratings_list.empty?
+      order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
+      Movie.order(order_given)
     else
       moviesQualified = nil
       ratings_list.each do |rating|
