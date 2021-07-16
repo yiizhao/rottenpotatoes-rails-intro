@@ -12,12 +12,14 @@ class MoviesController < ApplicationController
     @id = nil
     @all_ratings = Movie.all_ratings 
     #current ratings from params, id from params, previous ratings, previous id
-    if !(session[:ratings_to_show].nil?)
-      @ratings_to_show = session[:ratings_to_show]
-    end
-    if !(session[:id].nil?)
-      @id = session[:id]
-    end
+
+#     if !(session[:ratings].nil?)
+#       @ratings_to_show = session[:ratings]
+#     end
+#     if !(session[:id].nil?)
+#       @id = session[:id]
+#     end
+
     if params[:ratings].nil? && params[:id].nil?
       @ratings_to_show = []
     elsif params[:ratings].nil?
@@ -29,8 +31,10 @@ class MoviesController < ApplicationController
       @ratings_to_show = params[:ratings].keys
       @id = params[:id]
     end
-    session[:ratings_to_show] = @ratings_to_show
+
+    session[:ratings] = @ratings_to_show
     session[:id] = @id
+
     @movies = Movie.with_ratings(@ratings_to_show, @id)
   end
 
