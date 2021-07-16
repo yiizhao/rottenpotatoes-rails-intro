@@ -18,7 +18,7 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th <%= :class => ("p-3 mb-2 bg-warning text-dark hilite" if @id.eql?('title_header')) %>><%= link_to "Movie Title", movies_path(:id => 'title_header', :ratings => Hash[@ratings_to_show.collect { |item| [item, "1"] } ]), :id => 'title_header' %></th>
+      <th <%= :class => ("bg-warning text-blue hilite" if @id.eql?('title_header')) %>><%= link_to "Movie Title", movies_path(:id => 'title_header', :ratings => Hash[@ratings_to_show.collect { |item| [item, "1"] } ]), :id => 'title_header' %></th>
       <th>Rating</th>
       <th><%= link_to "Release Date", movies_path(:id => 'release_date_header', :ratings => Hash[@ratings_to_show.collect { |item| [item, "1"] } ]), :id => 'release_date_header', :class => ("p-3 mb-2 bg-warning text-dark hilite" if @id.eql?('release_date_header')) %></th>
       <th>More Info</th>
