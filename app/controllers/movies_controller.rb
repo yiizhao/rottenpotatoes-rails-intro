@@ -12,18 +12,45 @@ class MoviesController < ApplicationController
     @id = nil
     @all_ratings = Movie.all_ratings 
     #current ratings from params, id from params, previous ratings, previous id
-    if params[:ratings].nil? && params[:id].nil?
-      @ratings_to_show = []
-    elsif params[:ratings].nil?
-      @ratings_to_show = []
-      @id = params[:id]
-    elsif params[:id].nil?
-      @ratings_to_show = params[:ratings].keys
-    else
-      @ratings_to_show = params[:ratings].keys
-      @id = params[:id]
+#  the current variable: used in view, represent the change just made
+#  the session: store the action just made, can be used in view
+#  the params: the change just request
+#
+#  case1: the params: ratings: nil, id: nil
+#         case1.1 session: ratings: nil, id: nil                 
+#         case1.2 session: ratings: not nil
+#         case1.3 session: id: not nil
+#         case1.4 session: both not nil
+#          
+#  case2: the params: ratings: nil
+#          update session id
+#          case2.1 session: ratings: nil
+#          case2.2 session: ratings: not nil
+#  
+#  case3: the params: id: nil
+#         update the session ratings
+#         case3.1 session: id: nil
+#         case3.2 seesion: id: not nil
+#  
+#  case4: the params: both not nil
+#         update session both
+#         
+#         
+#  call with_ratings
+#  
+#  
+#  
+    
+    if !(params[:ratings].nil?)
+      session[:ratings] = params[:ratings]
+    end   
+    if !(params[:id].nil?)
+      session[:id] = params[:id]
     end
+    @ratings_to_show = session[:ratings].keys
+    @id = session[:id]
     @movies = Movie.with_ratings(@ratings_to_show, @id)
+   
   end
 
   def new
