@@ -20,6 +20,7 @@ class Movie < ActiveRecord::Base
           moviesQualified += Movie.where("rating LIKE ?", "#{rating}")
         end
       end
+      moviesQualified
     else
       moviesQualified = nil
       order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
@@ -30,6 +31,7 @@ class Movie < ActiveRecord::Base
           moviesQualified += Movie.where("rating LIKE ?", "#{rating}").order(order_given)
         end
       end
+      moviesQualified
     end
   end
   
