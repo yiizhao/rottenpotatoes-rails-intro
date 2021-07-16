@@ -56,7 +56,7 @@ class MoviesController < ApplicationController
       session[:id] = params[:id]
       @id = params[:id]
     end
-    @movies = Movie.with_ratings(@ratings_to_show, @id)
+    @movies = Movie.with_ratings(session[:ratings].keys, session[:id])
    
 
 #     if params[:ratings].nil? && params[:id].nil?
