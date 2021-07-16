@@ -11,25 +11,25 @@ class Movie < ActiveRecord::Base
     elsif ratings_list.empty?
       order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
       Movie.order(order_given)
-    else
+    elsif order_given.nil?
       moviesQualified = nil
       ratings_list.each do |rating|
-        if order_given == nil
-          if moviesQualified == nil
-            moviesQualified = Movie.where("rating LIKE ?", "#{rating}")
-          else
-            moviesQualified += Movie.where("rating LIKE ?", "#{rating}")
-          end
+        if moviesQualified == nil
+          moviesQualified = Movie.where("rating LIKE ?", "#{rating}")
         else
-          order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
-          if moviesQualified == nil
-            moviesQualified = Movie.where("rating LIKE ?", "#{rating}").order(order_given)
-          else
-            moviesQualified += Movie.where("rating LIKE ?", "#{rating}").order(order_given)
-          end
+          moviesQualified += Movie.where("rating LIKE ?", "#{rating}")
         end
       end
-      moviesQualified
+    else
+      moviesQualified = nil
+      order_given = order_given.eql?('title_header') ? 'title' : 'release_date'
+      ratings_list.each do |rating|   
+        if moviesQualified == nil
+          moviesQualified = Movie.where("rating LIKE ?", "#{rating}").order(order_given)
+        else
+          moviesQualified += Movie.where("rating LIKE ?", "#{rating}").order(order_given)
+        end
+      end
     end
   end
   
