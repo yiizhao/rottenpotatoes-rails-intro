@@ -12,7 +12,8 @@ class MoviesController < ApplicationController
     @id = nil
     @all_ratings = Movie.all_ratings 
     #current ratings from params, id from params, previous ratings, previous id
-
+#params, session.
+#
 #     if !(session[:ratings].nil?)
 #       @ratings_to_show = session[:ratings]
 #     end
