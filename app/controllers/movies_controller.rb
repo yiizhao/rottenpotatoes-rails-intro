@@ -8,9 +8,9 @@ class MoviesController < ApplicationController
   end
 
   def index #? can @ratings_to_show out of current functions
-    @ratings_to_show = []
-    @id = nil
-    @all_ratings = Movie.all_ratings 
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = @all_ratings
+    @id = nil 
     #current ratings from params, id from params, previous ratings, previous id
 #  the current variable: used in view, represent the change just made
 #  the session: store the action just made, can be used in view
