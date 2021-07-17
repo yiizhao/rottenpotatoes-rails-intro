@@ -9,34 +9,71 @@ class MoviesController < ApplicationController
 
   def index #? can @ratings_to_show out of current functions
     @all_ratings = Movie.all_ratings
-    ratingsPara = params[:ratings] || session[:ratings]
-    @ratings_to_show = ratingsPara.nil? ? @all_ratings : ratingsPara.keys
-    @sort_by = params[:sort_by] || session[:sort_by]  
+#     ratingsPara = params[:ratings] || session[:ratings]
+#     @ratings_to_show = ratingsPara.nil? ? @all_ratings : ratingsPara.keys
+#     @sort_by = params[:sort_by] || session[:sort_by]  
+#     if (params[:ratings].nil?) && (params[:sort_by].nil?)
+#       @movies = Movie.all
+#       return
+#     elsif !(params[:ratings].nil?)
+#       if session[:ratings] != params[:ratings]
+#         session[:ratings] = params[:ratings]
+#         redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
+#       end
+#     elsif !(params[:sort_by].nil?)
+#       if !session[:sort_by].eql?(params[:sort_by]) 
+#         session[:sort_by] = params[:sort_by]
+#         redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
+#       end
+#     else
+#       if session[:ratings] != params[:ratings]
+#         session[:ratings] = params[:ratings]
+#         redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)  
+#       end
+#       if !session[:sort_by].eql?(params[:sort_by]) 
+#         session[:sort_by] = params[:sort_by]
+#         redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
+#       end
+#     end
+#     @movies = Movie.with_ratings(@ratings_to_show, @sort_by)
     if (params[:ratings].nil?) && (params[:sort_by].nil?)
       @movies = Movie.all
+      @ratings_to_show = @all_ratings
       return
-    elsif !(params[:ratings].nil?)
-      if session[:ratings] != params[:ratings]
-        session[:ratings] = params[:ratings]
-        redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
-      end
-    elsif !(params[:sort_by].nil?)
-      if !session[:sort_by].eql?(params[:sort_by]) 
-        session[:sort_by] = params[:sort_by]
-        redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
-      end
-    else
-      if session[:ratings] != params[:ratings]
-        session[:ratings] = params[:ratings]
-        redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)  
-      end
-      if !session[:sort_by].eql?(params[:sort_by]) 
-        session[:sort_by] = params[:sort_by]
-        redirect_to movies_path(:ratings => @ratings_to_show, :sort_by => ratingsPara)
-      end
     end
-    @movies = Movie.with_ratings(@ratings_to_show, @sort_by)
-   
+    if params[:ratings].nil?
+      if session[:sort_by] != params[:sort_by]
+        session[:sort_by] = params[:sort_by]
+        redirect_to movies_path(params) 
+      else
+        @ratings_to_show = @all_ratings
+        @sort_by = params[:ratings]
+        @movies = Movie.with_ratings(@ratings_to_show, @sort_by)        
+      end
+      return
+    end
+    if params[:sort_by].nil?
+      if session[:ratings] != params[:ratings]
+        session[:ratings] = params[:ratings]
+        redirect_to movies_path(:ratings => params[:ratings], :sort_by => session[sort_by]) 
+      else
+        @ratings_to_show = params[:ratings].keys
+        @sort_by = params[:sort_by]
+        @movies = Movie.with_ratings(@ratings_to_show, @sort_by)        
+      end
+      return
+    end
+    if session[:ratings] != params[:ratings]
+       session[:ratings] = params[:ratings]
+       redirect_to movies_path(params)
+    elsif session[:sort_by] != params[:sort_by]
+       session[:sort_by] = params[:sort_by]
+       redirect_to movies_path(params)      
+    else
+       @ratings_to_show = params[:ratings].keys
+       @sort_by = params[:sort_by]
+       @movies = Movie.with_ratings(@ratings_to_show, @sort_by)   
+    end
   end
 
   def new
