@@ -9,7 +9,7 @@ class MoviesController < ApplicationController
 
   def index #? can @ratings_to_show out of current functions
     @all_ratings = Movie.all_ratings
-    @ratings_to_show = params[:ratings].keys || session[:ratings] || @all_ratings
+    @ratings_to_show = params[:ratings].keys || session[:ratings].keys || @all_ratings
     @sort_by = params[:sort_by] || session[:sort_by]
     
     if (params[:ratings].nil?) && (params[:sort_by].nil?)
