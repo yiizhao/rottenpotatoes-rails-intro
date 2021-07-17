@@ -10,63 +10,34 @@ class MoviesController < ApplicationController
   def index #? can @ratings_to_show out of current functions
     @all_ratings = Movie.all_ratings
     @ratings_to_show = @all_ratings
-    @id = nil 
-    #current ratings from params, id from params, previous ratings, previous id
-#  the current variable: used in view, represent the change just made
-#  the session: store the action just made, can be used in view
-#  the params: the change just request
-#
-#  case1: the params: ratings: nil, id: nil
-#         case1.1 session: ratings: nil, id: nil                 
-#         case1.2 session: ratings: not nil
-#         case1.3 session: id: not nil
-#         case1.4 session: both not nil
-#          
-#  case2: the params: ratings: nil
-#          update session id
-#          case2.1 session: ratings: nil
-#          case2.2 session: ratings: not nil
-#  
-#  case3: the params: id: nil
-#         update the session ratings
-#         case3.1 session: id: nil
-#         case3.2 seesion: id: not nil
-#  
-#  case4: the params: both not nil
-#         update session both
-#         
-#         
-#  call with_ratings
-#  
-#  
-#  
-  
-    if (params[:ratings].nil?) && (params[:ratings].nil?)
+    @sort_by = nil  #params[:sort_by] || session[:sort_by]
+     
+    if (params[:ratings].nil?) && (params[:sort_by].nil?)
       @movies = Movie.all
       return
     elsif !(params[:ratings].nil?)
       if session[:ratings] != params[:ratings]
         session[:ratings] = params[:ratings]
-        redirect_to movies_path(params[:ratings], params[:id])
+        redirect_to movies_path(params)
       end
-    elsif !(params[:id].nil?)
-      if !session[:id].eql?(params[:id]) 
-        session[:id] = params[:id]
-        redirect_to movies_path(params[:ratings], params[:id])
+    elsif !(params[:sort_by].nil?)
+      if !session[:sort_by].eql?(params[:sort_by]) 
+        session[:sort_by] = params[:sort_by]
+        redirect_to movies_path(params)
       end
     else
       if session[:ratings] != params[:ratings]
         session[:ratings] = params[:ratings]
-        redirect_to movies_path(params[:ratings], params[:id])  
+        redirect_to movies_path(params)  
       end
-      if !session[:id].eql?(params[:id]) 
-        session[:id] = params[:id]
-        redirect_to movies_path(params[:ratings], params[:id])
+      if !session[:sort_by].eql?(params[:sort_by]) 
+        session[:sort_by] = params[:sort_by]
+        redirect_to movies_path(params)
       end
     end
     @ratings_to_show = params[:ratings].keys
-    @id = params[:id]
-    @movies = Movie.with_ratings(@ratings_to_show, @id)
+    @sort_by = params[:sort_by]
+    @movies = Movie.with_ratings(@ratings_to_show, @sort_by)
    
   end
 
