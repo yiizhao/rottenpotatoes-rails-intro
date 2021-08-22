@@ -1,3 +1,6 @@
+Test by BDD: https://github.com/yiizhao/hdd-cucumber
+The search feature with BDD and TDD: https://github.com/yiizhao/acceptance-unit-test-cycle 
+
 # RottenPotatoes demo app: getting started
 
 This app is associated with the free [online
